@@ -1,0 +1,43 @@
+﻿@model EventsList
+@using Google.Apis.Auth.OAuth2;
+@using Google.Apis.Calendar.v3;
+@using Google.Apis.Calendar.v3.Data;
+@using Google.Apis.Services;
+@using Google.Apis.Util.Store;
+@using System;
+@using System.Collections.Generic;
+@using System.IO;
+@using System.Linq;
+@using System.Text;
+@using System.Threading;
+@using System.Threading.Tasks;
+@using Microsoft.AspNetCore.Mvc;
+    @{
+        ViewData["Title"] = "CalendarList";
+        
+    }
+
+    <h2>CalendarList</h2>
+
+    @{Console.WriteLine("Upcoming events:");
+        if (Model.Events.Items != null && Model.Events.Items.Count > 0)
+        {
+            foreach (var eventItem in Model.Events.Items)
+            {
+                string title = eventItem.ETag;
+                string when = eventItem.Start.DateTime.ToString();
+                if (String.IsNullOrEmpty(when))
+                {
+                    when = eventItem.Start.Date;
+                }
+                <p>@when @title</p>
+                //Console.WriteLine("{0} ({1})", eventItem.Summary, when);
+            }
+        }
+        else
+        {
+            <p>No Upcoming Events Found</p>
+            //Console.WriteLine("No upcoming events found.");
+        }
+        //Console.Read();
+    }
